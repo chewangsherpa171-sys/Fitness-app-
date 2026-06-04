@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chewang Sherpa — Portfolio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #080b10;
+  --bg2: #0d1117;
+  --bg3: #111820;
+  --surface: #141c26;
+  --surface2: #1a2535;
+  --border: rgba(99,179,237,0.1);
+  --border2: rgba(99,179,237,0.2);
+  --sky: #63b3ed;
+  --sky-dim: #4299e1;
+  --gold: #f6c90e;
+  --gold-dim: #d4a908;
+  --text: #e8edf5;
+  --text-muted: #8896a8;
+  --text-dim: #4a5568;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--sky);border-radius:2px}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.6s ease,visibility 0.6s ease}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-name{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;letter-spacing:0.15em;color:var(--text);opacity:0;animation:fadeUp 0.8s 0.3s forwards}
+.loader-bar{width:160px;height:2px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--gold));border-radius:2px;width:0;animation:loadFill 1.8s 0.5s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes loadFill{to{width:100%}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;transition:background 0.4s,border-color 0.4s,backdrop-filter 0.4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,11,16,0.88);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;letter-spacing:0.08em;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--sky)}
+.nav-links{display:flex;list-style:none;gap:2.5rem;align-items:center}
+.nav-links a{text-decoration:none;color:var(--text-muted);font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--sky);transition:width 0.3s}
+.nav-links a:hover{color:var(--sky)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:transparent;border:1px solid var(--sky);color:var(--sky)!important;padding:8px 20px;border-radius:50px;font-size:0.8rem!important;transition:all 0.25s!important}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{background:var(--sky)!important;color:var(--bg)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all 0.3s;border-radius:2px}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{position:fixed;top:68px;left:0;right:0;background:rgba(8,11,16,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:28px 6%;z-index:700;display:none;flex-direction:column;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{text-decoration:none;color:var(--text-muted);font-size:0.9rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:14px 0;border-bottom:1px solid var(--border);transition:color 0.2s;display:block}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover{color:var(--sky)}
+
+/* BACK TO TOP */
+#btt{position:fixed;bottom:32px;right:32px;z-index:700;width:44px;height:44px;background:var(--surface);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--sky);transition:all 0.3s;opacity:0;pointer-events:none;transform:translateY(12px)}
+#btt.show{opacity:1;pointer-events:all;transform:translateY(0)}
+#btt:hover{background:var(--sky);color:var(--bg);border-color:var(--sky);transform:translateY(-2px)}
+
+/* SECTIONS */
+section{padding:100px 6%}
+.section-tag{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--sky);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.section-tag::before{content:'';width:28px;height:1px;background:var(--sky)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:300;line-height:1.1;letter-spacing:0.01em;margin-bottom:16px}
+.section-title em{font-style:italic;color:var(--sky)}
+.section-sub{color:var(--text-muted);font-size:0.95rem;font-weight:400;max-width:520px;line-height:1.75}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:120px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 40%,rgba(99,179,237,0.06) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 10% 80%,rgba(246,201,14,0.04) 0%,transparent 50%),linear-gradient(160deg,#080b10 0%,#0a0f18 60%,#080b10 100%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(99,179,237,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,0.03) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 30%,transparent 75%)}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(100px)}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(99,179,237,0.08),transparent);top:-150px;right:-100px;animation:drift1 12s ease-in-out infinite}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(246,201,14,0.05),transparent);bottom:0;left:-50px;animation:drift2 15s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,30px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.hero-content{position:relative;z-index:2;max-width:800px}
+.hero-greeting{font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp 0.7s 0.2s forwards}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,7rem);font-weight:300;line-height:0.95;letter-spacing:-0.01em;margin-bottom:20px;opacity:0;animation:fadeUp 0.7s 0.4s forwards}
+.hero-name strong{display:block;font-weight:600;color:var(--sky)}
+.hero-subtitle{font-size:1rem;color:var(--text-muted);font-weight:400;margin-bottom:48px;min-height:28px;opacity:0;animation:fadeUp 0.7s 0.6s forwards}
+.hero-subtitle .typed-cursor{color:var(--sky);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 0.8s forwards}
+.btn-solid{background:var(--sky);color:var(--bg);padding:13px 32px;border-radius:50px;font-weight:700;font-size:0.88rem;text-decoration:none;letter-spacing:0.04em;transition:all 0.25s;display:inline-flex;align-items:center;gap:8px}
+.btn-solid:hover{background:var(--gold);box-shadow:0 8px 32px rgba(246,201,14,0.25);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--text);padding:13px 32px;border-radius:50px;font-weight:500;font-size:0.88rem;text-decoration:none;letter-spacing:0.04em;border:1px solid var(--border2);transition:all 0.25s;display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:rgba(99,179,237,0.5);background:rgba(99,179,237,0.06);transform:translateY(-2px)}
+.hero-scroll-hint{position:absolute;bottom:40px;left:6%;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp 0.7s 1.2s forwards}
+.scroll-line{width:40px;height:1px;background:var(--text-dim)}
+.scroll-text{font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase}
+.hero-dots{position:absolute;right:6%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:2;opacity:0;animation:fadeIn 1s 1.5s forwards}
+@keyframes fadeIn{to{opacity:1}}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:background 0.2s}
+.hero-dot.active,.hero-dot:hover{background:var(--sky)}
+
+/* ABOUT */
+#about{background:var(--bg2)}
+.about-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:center}
+.about-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:48px 40px;position:relative;overflow:hidden}
+.about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sky),transparent)}
+.about-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400;color:var(--bg);margin:0 auto 24px;letter-spacing:0.05em}
+.about-card-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;text-align:center;margin-bottom:4px;letter-spacing:0.04em}
+.about-card-title{font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--sky);text-align:center;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:28px}
+.about-card-divider{height:1px;background:var(--border);margin-bottom:24px}
+.about-card-item{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:0.85rem;color:var(--text-muted)}
+.about-card-icon{font-size:1rem;width:28px;text-align:center;flex-shrink:0}
+.about-text-content{}
+.about-text{font-size:1.05rem;color:var(--text-muted);line-height:1.85;font-weight:400;margin-bottom:28px}
+.about-text strong{color:var(--text);font-weight:600}
+.about-highlights{display:flex;flex-direction:column;gap:14px}
+.about-highlight{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:border-color 0.2s}
+.about-highlight:hover{border-color:var(--border2)}
+.ah-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+.ah-title{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:3px}
+.ah-desc{font-size:0.82rem;color:var(--text-muted);font-weight:400;line-height:1.5}
+
+/* SKILLS */
+#skills{background:var(--bg)}
+.skills-layout{display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start}
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px 22px;transition:all 0.3s;position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sky),transparent);transform:scaleX(0);transition:transform 0.4s}
+.skill-card:hover{border-color:var(--border2);background:var(--surface2);transform:translateY(-4px)}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-emoji{font-size:1.8rem;margin-bottom:14px;display:block}
+.skill-name{font-size:0.92rem;font-weight:600;color:var(--text);margin-bottom:10px}
+.skill-bar-track{height:3px;background:rgba(99,179,237,0.1);border-radius:2px;overflow:hidden}
+.skill-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sky),var(--gold));width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.skill-level{font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--sky);letter-spacing:0.1em;margin-top:8px;text-transform:uppercase}
+
+/* EXPERIENCE */
+#experience{background:var(--bg2)}
+.timeline{position:relative;max-width:700px;margin:64px auto 0;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--border2),var(--border2),transparent)}
+.tl-item{position:relative;padding-bottom:56px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-38px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--sky);border:3px solid var(--bg2);box-shadow:0 0 0 3px rgba(99,179,237,0.2)}
+.tl-date{font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--sky);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px}
+.tl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 28px 24px;transition:border-color 0.2s}
+.tl-card:hover{border-color:var(--border2)}
+.tl-title{font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:8px}
+.tl-org{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:14px;text-transform:uppercase}
+.tl-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.7;font-weight:400}
+.tl-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tl-tag{font-size:0.72rem;padding:4px 12px;background:rgba(99,179,237,0.08);border:1px solid rgba(99,179,237,0.15);border-radius:50px;color:var(--sky);font-family:'Fira Code',monospace;letter-spacing:0.06em}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden;max-width:860px;margin:64px auto 0;transition:border-color 0.3s,transform 0.3s;display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+.project-card:hover{border-color:var(--border2);transform:translateY(-4px)}
+.project-visual{background:linear-gradient(135deg,var(--bg3) 0%,var(--surface2) 100%);position:relative;overflow:hidden;min-height:320px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.project-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(99,179,237,0.08) 0%,transparent 70%)}
+.project-icon-big{font-size:4rem;position:relative;z-index:1;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.project-visual-label{font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;position:relative;z-index:1}
+.project-visual-screen{position:absolute;bottom:20px;right:20px;width:80px;height:120px;background:var(--bg);border:1px solid var(--border2);border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+.pvs-bar{height:8px;background:linear-gradient(90deg,var(--sky),var(--gold));width:100%}
+.pvs-content{padding:6px;display:flex;flex-direction:column;gap:4px}
+.pvs-line{height:3px;background:var(--border2);border-radius:2px}
+.pvs-line:nth-child(2){width:70%}
+.pvs-line:nth-child(3){width:55%}
+.pvs-dot{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--gold));margin-top:4px}
+.project-info{padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+.project-badge{font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px}
+.project-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;line-height:1.1;margin-bottom:16px;letter-spacing:0.01em}
+.project-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:24px;font-weight:400}
+.project-tech{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.tech-tag{font-size:0.72rem;padding:5px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-family:'Fira Code',monospace;letter-spacing:0.05em}
+.project-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-project{padding:10px 22px;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;letter-spacing:0.03em}
+.btn-live{background:var(--sky);color:var(--bg)}
+.btn-live:hover{background:var(--gold);transform:translateY(-1px)}
+.btn-github{background:transparent;color:var(--text-muted);border:1px solid var(--border2)}
+.btn-github:hover{border-color:rgba(255,255,255,0.3);color:var(--text);transform:translateY(-1px)}
+
+/* ACHIEVEMENTS */
+#achievements{background:var(--bg2)}
+.achievements-header{text-align:center;margin-bottom:64px}
+.achievements-header .section-tag{justify-content:center}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.stat-cell{background:var(--surface);padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:background 0.3s}
+.stat-cell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sky),transparent);transform:scaleX(0);transition:transform 0.5s}
+.stat-cell:hover{background:var(--surface2)}
+.stat-cell:hover::after{transform:scaleX(1)}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;color:var(--sky);line-height:1;margin-bottom:12px}
+.stat-label{font-size:0.82rem;color:var(--text-muted);line-height:1.5;max-width:120px;margin:0 auto;font-weight:400}
+
+/* CONTACT */
+#contact{background:var(--bg)}
+.contact-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start}
+.contact-info-section{}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;margin-bottom:20px;transition:border-color 0.2s}
+.contact-card:hover{border-color:var(--border2)}
+.cc-icon{font-size:1.4rem;margin-bottom:12px}
+.cc-label{font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--sky);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px}
+.cc-value{font-size:0.95rem;color:var(--text);font-weight:500}
+.cc-value a{color:var(--text);text-decoration:none;transition:color 0.2s}
+.cc-value a:hover{color:var(--sky)}
+.social-row{display:flex;gap:12px;margin-top:8px}
+.social-btn{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;text-decoration:none;color:var(--text-muted);transition:all 0.2s}
+.social-btn:hover{background:rgba(99,179,237,0.1);border-color:var(--border2);color:var(--sky);transform:translateY(-2px)}
+
+/* FORM */
+.contact-form{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:44px 40px}
+.form-group{margin-bottom:24px}
+.form-label{display:block;font-size:0.8rem;font-weight:500;color:var(--text-muted);margin-bottom:10px;letter-spacing:0.04em;text-transform:uppercase;font-family:'Fira Code',monospace}
+.form-input,.form-textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Syne',sans-serif;font-size:0.93rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+.form-input:focus,.form-textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(99,179,237,0.1)}
+.form-input.error,.form-textarea.error{border-color:#fc8181;box-shadow:0 0 0 3px rgba(252,129,129,0.08)}
+.form-textarea{min-height:130px;resize:vertical}
+.form-error{display:block;font-size:0.75rem;color:#fc8181;margin-top:6px;min-height:16px;font-family:'Fira Code',monospace}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.btn-send{background:var(--sky);color:var(--bg);border:none;padding:14px 36px;border-radius:50px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.25s;font-family:'Syne',sans-serif;letter-spacing:0.03em;display:inline-flex;align-items:center;gap:8px}
+.btn-send:hover{background:var(--gold);box-shadow:0 8px 32px rgba(246,201,14,0.2);transform:translateY(-2px)}
+.form-success{display:none;text-align:center;padding:56px 0}
+.fs-icon{font-size:3rem;margin-bottom:16px}
+.fs-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--sky);margin-bottom:8px;letter-spacing:0.04em}
+.fs-text{color:var(--text-muted);font-size:0.95rem;font-weight:400}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 6% 32px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:56px}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;letter-spacing:0.06em;margin-bottom:12px;color:var(--text)}
+.footer-brand span{color:var(--sky)}
+.footer-sub{font-size:0.85rem;color:var(--text-dim);line-height:1.7;max-width:280px;font-weight:400}
+.footer-heading{font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:20px;font-family:'Fira Code',monospace}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{text-decoration:none;font-size:0.85rem;color:var(--text-dim);transition:color 0.2s;font-weight:400}
+.footer-links a:hover{color:var(--sky)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:0.8rem;color:var(--text-dim);font-family:'Fira Code',monospace}
+.footer-copy span{color:var(--sky)}
+.footer-built{font-size:0.78rem;color:var(--text-dim);font-family:'Fira Code',monospace}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-l.visible{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-r.visible{opacity:1;transform:translateX(0)}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}.d5{transition-delay:0.5s}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .about-layout{grid-template-columns:1fr;gap:48px}
+  .skills-layout{grid-template-columns:1fr;gap:48px}
+  .contact-layout{grid-template-columns:1fr;gap:48px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .project-card{grid-template-columns:1fr;max-width:520px}
+  .project-visual{min-height:240px}
+}
+@media(max-width:768px){
+  section{padding:72px 5%}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-name{font-size:clamp(3rem,13vw,5rem)}
+  .footer-top{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .contact-form{padding:32px 24px}
+  .hero-dots{display:none}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .project-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name">Chewang Sherpa</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">CS<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#projects" onclick="closeMobile()">Projects</a>
+  <a href="#achievements" onclick="closeMobile()">Achievements</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- BACK TO TOP -->
+<div id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-content">
+    <div class="hero-greeting">Hello, World — Welcome to my portfolio</div>
+    <h1 class="hero-name">
+      Chewang
+      <strong>Sherpa</strong>
+    </h1>
+    <p class="hero-subtitle"><span id="typed-text"></span><span class="typed-cursor">|</span></p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-solid">View Project →</a>
+      <a href="#contact" class="btn-outline">Contact Me</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll to explore</span>
+  </div>
+  <div class="hero-dots">
+    <div class="hero-dot active"></div>
+    <div class="hero-dot"></div>
+    <div class="hero-dot"></div>
+    <div class="hero-dot"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-layout">
+    <div class="reveal-l">
+      <div class="about-card">
+        <div class="about-avatar">CS</div>
+        <div class="about-card-name">Chewang Sherpa</div>
+        <div class="about-card-title">Undergraduate Student &amp; Developer</div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item"><span class="about-card-icon">🎓</span>SSC WB — Undergraduate</div>
+        <div class="about-card-item"><span class="about-card-icon">📍</span>West Bengal, India</div>
+        <div class="about-card-item"><span class="about-card-icon">💡</span>Gen AI Enthusiast</div>
+        <div class="about-card-item"><span class="about-card-icon">🌐</span>Web Developer</div>
+        <div class="about-card-item"><span class="about-card-icon">👨‍🏫</span>Educator &amp; Mentor</div>
+        <div class="about-card-item"><span class="about-card-icon">✉️</span>chewang171@gmail.com</div>
+      </div>
+    </div>
+    <div class="about-text-content reveal-r">
+      <div class="section-tag">About Me</div>
+      <h2 class="section-title">Building the Future,<br><em>One Line at a Time</em></h2>
+      <p class="about-text">I am an <strong>inspiring and motivated individual</strong> currently pursuing my undergraduate studies at SSC WB. I am passionate about technology, learning, teaching, and building impactful digital solutions.</p>
+      <p class="about-text">I enjoy exploring <strong>emerging technologies</strong> and helping others develop their skills in web development and Generative AI — turning complex concepts into accessible knowledge for learners at every level.</p>
+      <div class="about-highlights">
+        <div class="about-highlight">
+          <span class="ah-icon">🚀</span>
+          <div>
+            <div class="ah-title">Technology &amp; Innovation</div>
+            <div class="ah-desc">Deeply passionate about exploring the frontiers of web development and artificial intelligence.</div>
+          </div>
+        </div>
+        <div class="about-highlight">
+          <span class="ah-icon">🎯</span>
+          <div>
+            <div class="ah-title">Education &amp; Mentorship</div>
+            <div class="ah-desc">Dedicated to empowering others — taught 100+ students and mentored learners in Gen AI and web development.</div>
+          </div>
+        </div>
+        <div class="about-highlight">
+          <span class="ah-icon">🔬</span>
+          <div>
+            <div class="ah-title">Continuous Learning</div>
+            <div class="ah-desc">Always curious, always growing — committed to staying at the cutting edge of technology and pedagogy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-layout">
+    <div class="reveal-l">
+      <div class="section-tag">Technical Skills</div>
+      <h2 class="section-title">Craft &amp;<br><em>Expertise</em></h2>
+      <p class="section-sub" style="margin-top:16px">A blend of technical proficiency and pedagogical skill — from writing clean code to teaching complex concepts clearly.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal d1">
+        <span class="skill-emoji">🌐</span>
+        <div class="skill-name">HTML5</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+        <div class="skill-level">Expert</div>
+      </div>
+      <div class="skill-card reveal d2">
+        <span class="skill-emoji">🎨</span>
+        <div class="skill-name">CSS3</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card reveal d3">
+        <span class="skill-emoji">⚡</span>
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card reveal d1">
+        <span class="skill-emoji">💻</span>
+        <div class="skill-name">Web Development</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card reveal d2">
+        <span class="skill-emoji">🤖</span>
+        <div class="skill-name">Generative AI</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+        <div class="skill-level">Advanced</div>
+      </div>
+      <div class="skill-card reveal d3">
+        <span class="skill-emoji">✍️</span>
+        <div class="skill-name">Prompt Engineering</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+        <div class="skill-level">Expert</div>
+      </div>
+      <div class="skill-card reveal d1">
+        <span class="skill-emoji">🧩</span>
+        <div class="skill-name">Problem Solving</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="87"></div></div>
+        <div class="skill-level">Expert</div>
+      </div>
+      <div class="skill-card reveal d2">
+        <span class="skill-emoji">👨‍🏫</span>
+        <div class="skill-name">Teaching &amp; Mentorship</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+        <div class="skill-level">Expert</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal" style="text-align:center;max-width:540px;margin:0 auto">
+    <div class="section-tag" style="justify-content:center">Experience</div>
+    <h2 class="section-title">Where I've<br><em>Made an Impact</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal d1">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2023 – 2024</div>
+      <div class="tl-card">
+        <div class="tl-title">Internship Teaching Program</div>
+        <div class="tl-org">SSC WB — Education Initiative</div>
+        <div class="tl-desc">Delivered structured lessons to over 100 students during an intensive internship program. Developed comprehensive curriculum materials, led interactive sessions, and assessed student progress — fostering a collaborative and growth-oriented learning environment.</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Teaching</span>
+          <span class="tl-tag">Curriculum Design</span>
+          <span class="tl-tag">100+ Students</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item reveal d2">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2024</div>
+      <div class="tl-card">
+        <div class="tl-title">Generative AI Mentorship</div>
+        <div class="tl-org">Training Program — Gen AI Track</div>
+        <div class="tl-desc">Mentored learners in the fundamentals and advanced applications of Generative AI. Covered topics including large language models, prompt engineering techniques, AI tools, and real-world use cases — helping participants understand and apply AI in practical contexts.</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Generative AI</span>
+          <span class="tl-tag">Prompt Engineering</span>
+          <span class="tl-tag">LLMs</span>
+          <span class="tl-tag">Mentoring</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item reveal d3">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2024</div>
+      <div class="tl-card">
+        <div class="tl-title">Web Development Workshops</div>
+        <div class="tl-org">Training Program — Web Dev Track</div>
+        <div class="tl-desc">Trained students in web development fundamentals and practical project building. Led hands-on workshops covering HTML, CSS, and JavaScript — taking learners from zero knowledge to building complete, responsive web projects with confidence.</div>
+        <div class="tl-tags">
+          <span class="tl-tag">HTML/CSS/JS</span>
+          <span class="tl-tag">Workshop Facilitation</span>
+          <span class="tl-tag">Project-Based Learning</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal" style="text-align:center;max-width:540px;margin:0 auto">
+    <div class="section-tag" style="justify-content:center">Projects</div>
+    <h2 class="section-title">Things I've<br><em>Built</em></h2>
+  </div>
+  <div class="project-card reveal">
+    <div class="project-visual">
+      <div class="project-icon-big">🏋️</div>
+      <div class="project-visual-label">Featured Project</div>
+      <div class="project-visual-screen">
+        <div class="pvs-bar"></div>
+        <div class="pvs-content">
+          <div class="pvs-dot"></div>
+          <div class="pvs-line"></div>
+          <div class="pvs-line"></div>
+          <div class="pvs-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-info">
+      <div class="project-badge">// Featured Project</div>
+      <div class="project-name">Fitness App</div>
+      <p class="project-desc">A modern, fully responsive fitness web application built with pure HTML, CSS, and JavaScript. Features workout tracking, goal setting, progress analytics, nutrition monitoring, daily challenges, and a community support system — all without any external frameworks.</p>
+      <div class="project-tech">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Responsive Design</span>
+        <span class="tech-tag">Glassmorphism</span>
+      </div>
+      <div class="project-btns">
+        <a href="https://github.com/chewangsherpa171-sys/Fitness-app-.git" target="_blank" rel="noopener" class="btn-project btn-live">Live Demo ↗</a>
+        <a href="https://github.com/chewangsherpa171-sys/Fitness-app-.git" target="_blank" rel="noopener" class="btn-project btn-github">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="achievements-header reveal">
+    <div class="section-tag">Achievements</div>
+    <h2 class="section-title">Impact in<br><em>Numbers</em></h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-cell">
+      <div class="stat-num" data-target="100" data-suffix="+">0</div>
+      <div class="stat-label">Students Mentored &amp; Taught</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="1" data-suffix="">0</div>
+      <div class="stat-label">Featured Project Launched</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="500" data-suffix="+">0</div>
+      <div class="stat-label">Collective Learning Hours</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="3" data-suffix="+">0</div>
+      <div class="stat-label">Training Programs Conducted</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="reveal-l">
+      <div class="section-tag">Contact</div>
+      <h2 class="section-title">Let's<br><em>Connect</em></h2>
+      <p class="section-sub" style="margin-top:16px;margin-bottom:36px">Whether you want to collaborate, learn together, or just say hello — my inbox is always open.</p>
+      <div class="contact-card">
+        <div class="cc-icon">✉️</div>
+        <div class="cc-label">Email</div>
+        <div class="cc-value"><a href="mailto:chewang171@gmail.com">chewang171@gmail.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">📞</div>
+        <div class="cc-label">Phone</div>
+        <div class="cc-value"><a href="tel:+916295541149">+91 6295541149</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">🔗</div>
+        <div class="cc-label">Social</div>
+        <div class="social-row">
+          <a href="https://github.com/chewangsherpa171-sys" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+          <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+          <a href="mailto:chewang171@gmail.com" class="social-btn" aria-label="Email">@</a>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-r">
+      <div class="contact-form" id="contact-form-wrap">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name</label>
+            <input class="form-input" type="text" id="fname" placeholder="Alex">
+            <span class="form-error" id="fname-err"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-input" type="text" id="lname" placeholder="Johnson">
+            <span class="form-error" id="lname-err"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cemail">Email Address</label>
+          <input class="form-input" type="email" id="cemail" placeholder="alex@email.com">
+          <span class="form-error" id="cemail-err"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="csubject">Subject</label>
+          <input class="form-input" type="text" id="csubject" placeholder="Collaboration / Mentorship / Just saying hi">
+          <span class="form-error" id="csubject-err"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cmessage">Message</label>
+          <textarea class="form-textarea" id="cmessage" placeholder="Tell me more about what you have in mind..."></textarea>
+          <span class="form-error" id="cmessage-err"></span>
+        </div>
+        <button class="btn-send" onclick="sendMessage()">Send Message →</button>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="fs-icon">✅</div>
+        <div class="fs-title">Message Sent!</div>
+        <p class="fs-text">Thank you for reaching out. I'll get back to you soon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">CS<span>.</span></div>
+      <p class="footer-sub">Undergraduate student, educator, and developer — building meaningful digital experiences and empowering others through technology.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Navigate</div>
+      <ul class="footer-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Connect</div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/chewangsherpa171-sys" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Twitter / X</a></li>
+        <li><a href="mailto:chewang171@gmail.com">Email</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span>Chewang Sherpa</span>. All rights reserved.</div>
+    <div class="footer-built">Built with HTML, CSS &amp; JavaScript</div>
+  </div>
+</footer>
+
+<script>
+// LOADER
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+  }, 2200);
+});
+
+// NAV
+const navbar = document.getElementById('navbar');
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  navbar.classList.toggle('scrolled', s > 20);
+  btt.classList.toggle('show', s > 400);
+  updateDots();
+});
+
+// HAMBURGER
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+function closeMobile() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+}
+
+// DOTS
+function updateDots() {
+  const sections = ['hero','about','skills','experience','projects','achievements','contact'];
+  const dots = document.querySelectorAll('.hero-dot');
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 200) current = Math.min(i, dots.length - 1);
+  });
+  dots.forEach((d,i) => d.classList.toggle('active', i === current % dots.length));
+}
+
+// TYPING
+const phrases = [
+  'Undergraduate Student | Gen AI Enthusiast | Web Developer',
+  'Building Impactful Digital Solutions',
+  'Mentoring the Next Generation',
+  'Exploring Emerging Technologies'
+];
+let pi = 0, ci = 0, deleting = false;
+const typedEl = document.getElementById('typed-text');
+function typeWriter() {
+  const current = phrases[pi];
+  if (!deleting) {
+    typedEl.textContent = current.slice(0, ci + 1);
+    ci++;
+    if (ci === current.length) {
+      deleting = true;
+      setTimeout(typeWriter, 2200);
+      return;
+    }
+  } else {
+    typedEl.textContent = current.slice(0, ci - 1);
+    ci--;
+    if (ci === 0) {
+      deleting = false;
+      pi = (pi + 1) % phrases.length;
+    }
+  }
+  setTimeout(typeWriter, deleting ? 42 : 68);
+}
+setTimeout(typeWriter, 2400);
+
+// SCROLL REVEAL
+const revEls = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+revEls.forEach(el => revObs.observe(el));
+
+// SKILL BARS
+const barObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar-fill').forEach(b => {
+        b.style.width = b.dataset.width + '%';
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.skills-grid').forEach(el => barObs.observe(el));
+
+// COUNTERS
+function animateCount(el) {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const dur = 2000, steps = 60;
+  let step = 0;
+  const inc = target / steps;
+  const timer = setInterval(() => {
+    step++;
+    const val = Math.min(Math.round(inc * step), target);
+    el.textContent = val + suffix;
+    if (step >= steps) { el.textContent = target + suffix; clearInterval(timer); }
+  }, dur / steps);
+}
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-target]').forEach(animateCount);
+      cntObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.stats-grid').forEach(el => cntObs.observe(el));
+
+// FORM VALIDATION
+function validateField(id, errId, check) {
+  const el = document.getElementById(id);
+  const err = document.getElementById(errId);
+  const result = check(el.value.trim());
+  if (!result.ok) {
+    el.classList.add('error'); err.textContent = result.msg; return false;
+  }
+  el.classList.remove('error'); err.textContent = ''; return true;
+}
+['fname','lname','cemail','csubject','cmessage'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => {
+    el.classList.remove('error');
+    const e = document.getElementById(id + '-err');
+    if (e) e.textContent = '';
+  });
+});
+function sendMessage() {
+  const checks = [
+    ['fname','fname-err', v => v.length >= 2 ? {ok:true} : {ok:false,msg:'Please enter your first name.'}],
+    ['lname','lname-err', v => v.length >= 2 ? {ok:true} : {ok:false,msg:'Please enter your last name.'}],
+    ['cemail','cemail-err', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? {ok:true} : {ok:false,msg:'Please enter a valid email.'}],
+    ['csubject','csubject-err', v => v.length >= 3 ? {ok:true} : {ok:false,msg:'Please enter a subject.'}],
+    ['cmessage','cmessage-err', v => v.length >= 15 ? {ok:true} : {ok:false,msg:'Message must be at least 15 characters.'}],
+  ];
+  const valid = checks.every(([id, errId, check]) => validateField(id, errId, check));
+  if (valid) {
+    document.getElementById('contact-form-wrap').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+}
+
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>
